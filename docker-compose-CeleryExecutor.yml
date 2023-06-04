@@ -10,10 +10,7 @@ services:
             - POSTGRES_USER=airflow
             - POSTGRES_PASSWORD=airflow
             - POSTGRES_DB=airflow
-        # Uncomment these lines to persist data on the local filesystem.
-        #     - PGDATA=/var/lib/postgresql/data/pgdata
-        # volumes:
-        #     - ./pgdata:/var/lib/postgresql/data/pgdata
+            - MONGO_DB_URL=mongodb://127.0.0.1:27017/
 
     webserver:
         image: puckel/docker-airflow:1.10.9
@@ -25,6 +22,7 @@ services:
             - LOAD_EX=n
             - FERNET_KEY=46BKJoQYlPPOexq0OhDZnIlNepKFf87WFwLbfzqDDho=
             - EXECUTOR=Celery
+            - MONGO_DB_URL=mongodb://127.0.0.1:27017/
             # - POSTGRES_USER=airflow
             # - POSTGRES_PASSWORD=airflow
             # - POSTGRES_DB=airflow
@@ -35,7 +33,9 @@ services:
             # - ./plugins:/usr/local/airflow/plugins
         ports:
             - "8080:8080"
+
         command: webserver
+
         healthcheck:
             test: ["CMD-SHELL", "[ -f /usr/local/airflow/airflow-webserver.pid ]"]
             interval: 30s
@@ -49,9 +49,11 @@ services:
             - redis
         environment:
             - EXECUTOR=Celery
+            - MONGO_DB_URL=mongodb://127.0.0.1:27017/
             # - REDIS_PASSWORD=redispass
         ports:
             - "5555:5555"
+
         command: flower
 
     scheduler:
@@ -67,12 +69,15 @@ services:
             - LOAD_EX=n
             - FERNET_KEY=46BKJoQYlPPOexq0OhDZnIlNepKFf87WFwLbfzqDDho=
             - EXECUTOR=Celery
+            - MONGO_DB_URL=mongodb://127.0.0.1:27017/
             # - POSTGRES_USER=airflow
             # - POSTGRES_PASSWORD=airflow
             # - POSTGRES_DB=airflow
             # - REDIS_PASSWORD=redispass
+
         command: scheduler
 
+        
     worker:
         image: puckel/docker-airflow:1.10.9
         restart: always
@@ -85,8 +90,10 @@ services:
         environment:
             - FERNET_KEY=46BKJoQYlPPOexq0OhDZnIlNepKFf87WFwLbfzqDDho=
             - EXECUTOR=Celery
+            - MONGO_DB_URL=mongodb://127.0.0.1:27017/
             # - POSTGRES_USER=airflow
             # - POSTGRES_PASSWORD=airflow
             # - POSTGRES_DB=airflow
             # - REDIS_PASSWORD=redispass
+
         command: worker

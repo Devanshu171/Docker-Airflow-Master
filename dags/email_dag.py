@@ -7,19 +7,19 @@ from bots.emailhelper import send
 
 default_args={
   "owner":"dev",
-  "start_date":datetime(2023,1,3)
+  "start_date":datetime(2023,6,3)
 }
 
 with DAG(
-  dag_id="PythonEmail",
+  dag_id="PythonEmail1.0",
   default_args=default_args,
-  schedule_interval=None
+  schedule_interval="@daily"
   ) as dag:
   
-  start_dag=PythonOperator(
-    task_id="start_dag",
+  send_email=PythonOperator(
+    task_id="send_email",
      python_callable=send
  
   )
   
-  start_dag
+  send_email
