@@ -11,7 +11,7 @@ default_args={
   }
 
 with DAG(
-  dag_id="batchOperatorDemo",
+  dag_id="batchOperatorDemo0.0",
   default_args=default_args,
   schedule_interval=None
   ) as dag:

@@ -8,7 +8,7 @@ def send():
     x.login("username","password")
     subject="Testing"
     body_text="Testing email automation"
-    message="subject{}{}".format(subject,body_text)
+    message="subject{}\n\n{}".format(subject,body_text)
     x.sendmail("sender","receiver",message)
     print("success")
   except Exception as exception:
